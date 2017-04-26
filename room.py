@@ -1,4 +1,5 @@
 import random
+import json
 
 class Room(object):
     def __init__(self):
@@ -49,7 +50,7 @@ class Room(object):
             if assigned_room in self.people_in_office:
                 self.people_in_office[assigned_room].append(person_name)
             else:
-                self.people_in_office[assigned_room] = [name]
+                self.people_in_office[assigned_room] = [person_name]
             person_name_list = person_name.split()
             result = "\
             Staff {} has been added successfully.\
@@ -72,12 +73,13 @@ class Room(object):
                         
                 assigned_room_living = available_rooms[random.randint(0, len(available_rooms)-1)]
                 self.living_space_people_counter[assigned_room_living] += 1
-                if assigned_room_living in self.people_in_office:
+                if assigned_room_living in self.people_in_living_spaces:
                     # adds person name to list of assigned rooms
-                    self.people_in_office[assigned_room_living].append(person_name)
+                    self.people_in_living_spaces[assigned_room_living].append(person_name)
+
                 else:
-                    self.people_in_office[assigned_room_living] = [person_name] # has name of assigned room and people in it
-                
+                    self.people_in_living_spaces[assigned_room_living] = [person_name] # has name of assigned room and people in it
+                    
                 # assigns fellow office
                 available_rooms[:] = []
                 flag = False
@@ -132,6 +134,7 @@ class Room(object):
                 return result
                 
 room = Room()
-#room.create_room('living space', 'maverick', 'complex', 'python')
-#room.create_room('office', 'maverick', 'nana')
-#print(room.add_person('nina', 'fellow'))
+room.create_room('office', 'maverick', 'complex', 'python')
+room.create_room('living space', 'maverick', 'nana')
+print(room.add_person('nina', 'fellow'))
+print(room.living_space_people_counter)
