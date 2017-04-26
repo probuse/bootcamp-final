@@ -32,8 +32,9 @@ class TestCreateRoom(unittest.TestCase):
         
     def test_person_exists_in_system(self):
         room5 = Room()
+        pro = Fellow()
         pro = room5.add_person('Pro', 'fellow')
-        self.assertIn('Pro', fellow)
+        self.assertIn('Pro', pro.fellow)
     
         
         
