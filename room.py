@@ -132,6 +132,6 @@ class Room(object):
                 return result
                 
 room = Room()
-room.create_room('living space', 'maverick', 'complex', 'python')
-room.create_room('office', 'maverick', 'nana')
-print(room.add_person('nina', 'fellow'))
+#room.create_room('living space', 'maverick', 'complex', 'python')
+#room.create_room('office', 'maverick', 'nana')
+#print(room.add_person('nina', 'fellow'))
