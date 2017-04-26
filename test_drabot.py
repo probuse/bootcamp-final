@@ -26,9 +26,9 @@ class TestCreateRoom(unittest.TestCase):
     
     def test_add_person_successfully(self):
         room4 = Room()
-        initial_room_count = len(room4.andelans)
+        initial_andelan_count = room4.andelans
         phillip = room4.add_person('Phillip', 'staff')
-        new_room_count = len(room4.andelans)
+        new_andelan_count = room4.andelans
         self.assertEqual(new_room_count - initial_room_count, 1)
         
     def test_person_exists_in_system(self):
@@ -41,4 +41,4 @@ class TestCreateRoom(unittest.TestCase):
         
 
 if __name__=="__main__":
-    unittest.main()        
+    unittest.main()         
