@@ -22,7 +22,18 @@ class TestCreateRoom(unittest.TestCase):
         many_rooms = room.create_room('living space', 'blue', 'black', 'red')
         new_room_count = len(room3.room_names)
         self.assertEqual(new_room_count - initial_room_count, 3)
+    
+    def test_add_person_successfully(self):
+        room4 = Room()
+        initial_room_count = len(room4.andelans)
+        phillip = room4.add_person('Phillip', 'staff')
+        new_room_count = len(room4.andelans)
+        self.assertEqual(new_room_count - initial_room_count, 1)
         
+    def test_person_exists_in_system(self):
+        room5 = Room()
+        pro = room5.add_person('Pro', 'fellow')
+        self.assertIn('Pro', fellow)
     
         
         
