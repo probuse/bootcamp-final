@@ -22,8 +22,11 @@ Options:
 import sys
 import cmd
 from docopt import docopt, DocoptExit
+
+sys.path.append('drabot')
+
+from _room import Room 
 """
-from drabot._room import Room
 from drabot.person import Person
 from drabot.living_space import LivingSpace
 from drabot.office import Office
@@ -62,7 +65,7 @@ def docopt_cmd(func):
     return fn
 
 
-#room = Room()
+room = Room()
 
 class Runner(cmd.Cmd):
     intro = """\
@@ -74,9 +77,21 @@ class Runner(cmd.Cmd):
     
     @docopt_cmd
     def do_create_room(self, arg):
-        "Usage: create_room <room_type> <room_name>..."
-        print("\nThis Feature is still under development\n")
-        #return room.create_room(room_type, *room_name)
+        """
+        Usage: create_room <room_type> <room_name>...
+        options:
+            -<room_type> : office | living_space
+            -<room_name> : room name to create
+        """
+        if arg['<room_type>'] == 'office':
+            for room_name in arg['<room_name>']:
+                room.create_room(arg['<room_type>'], room_name)
+        elif arg['<room_type>'] == 'living_space':
+            for room_name in arg['<room_name>']:
+                room.create_room(arg['<room_type>'], room_name)
+        #elif arg['<room_type>'] != 'office' or arg['<room_type>'] != 'living space':
+         #   return 'Invalid room selection.'
+           
         
     @docopt_cmd    
     def do_add_person(self, arg):
