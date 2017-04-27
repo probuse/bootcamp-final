@@ -22,7 +22,7 @@ class Room(object):
                 print("An office called {} has been successfully created".format(i))
         elif room_type.lower() == 'living_space':
             for i in room_name:
-                if i in self.office_room_names:
+                if i in self.living_room_names:
                     return 'Room {} already created'.format(i)
                 self.living_room_names.append(i)
                 self.living_space_count[i] = 0
@@ -34,9 +34,7 @@ class Room(object):
         "Adds person to the system"
         if position.lower() == "staff":
             office_name = self.room_allocator('office')
-            #for i in self.office_room_names:
-                #if i == office_name:
-                    #self.office_room_count[office_name] += 1
+            self.office_room_count[office_name] += 1
             short_name = person_name.split()    
             output = """\
             Staff {0} has been successfully added.
@@ -46,23 +44,20 @@ class Room(object):
             
         elif position.lower() == "fellow":
             if accommodation == 'Y':
-                office_name = self.room_allocator('living')
-                for i in self.living_room_names:
-                    if i == office_name:
-                        self.living_space_count[office_name] += 1
-                living_space = self.room_allocator('fellow')
+                living_space_name = self.room_allocator('living_space')
+                self.living_space_count[living_space_name] += 1
+                office_name = self.room_allocator('office')
+                self.office_room_count[office_name] += 1
                 short_name = person_name.split()
                 output = """\
                 Fellow {0} has been successfully added.
                 {1} has been allocated the office {2}
                 {2} has been allocated the livingspace {3}
-                """.format(person_name, short_name[0], office_name, living_space)
+                """.format(person_name, short_name[0], office_name, living_space_name)
                 return output
             elif accommodation == 'N':
                 office_name = self.room_allocator('office')
-                for i in self.office_room_names:
-                    if i == office_name:
-                        self.office_room_count[office_name] += 1
+                self.office_room_count[office_name] += 1
                 short_name = person_name.split()    
                 output = """\
                 Fellow {0} has been successfully added.
@@ -85,16 +80,17 @@ class Room(object):
                 if (6 - self.office_room_count[i]) != 0:
                     available_rooms.append(i)
             office_name = available_rooms[random.randint(0, len(available_rooms)-1)]
-            self.office_room_count[office_name] += 1
             return office_name
             
-        elif room_type == "living space":
+        elif room_type == "living_space":
             available_rooms[:] = []
             for i in self.living_room_names:
                 if (4 - self.living_space_count[i]) != 0:
                     available_rooms.append(i)
-            living_space_name = available_rooms[random.randint(0, len(available_rooms)-1)]
-            self.living_space_count[living_space_name] += 1
-            return living_space_name
+            if len(available_rooms) > 0:
+                living_space_name = available_rooms[random.randint(0, len(available_rooms)-1)]
+                return living_space_name
+            return 'All created rooms in for living space full. Please create a new room'
+            
         else:
             return "Invalid room type, room type is either an office or living space."
