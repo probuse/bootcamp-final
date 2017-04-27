@@ -1,7 +1,7 @@
 """
 Usage:
     drabot create_room <room_type> <room_name>...
-    drabot add_person <person_name> <fellow|staff> [accommodation]
+    drabot add_person <person_name> (<fellow> | <staff>) [<accommodation>]
     drabot print_room <room_name>
     drabot print_allocations [-o=filename]
     drabot print_unallocated [-o=filename]
@@ -11,10 +11,10 @@ Usage:
     drabot load_state <sqlite_database>
     drabot (-i | --interactive)
     drabot (-h | --help | --version)
+    
 Options:
     -i, --interactive  Interactive Mode
     -h, --help  Show this screen and exit.
-    -a --accommodation  wants accomodattion [default: N]
     -o, --filename save to file name
     -db --sqlite_database
     
@@ -81,7 +81,7 @@ class Runner(cmd.Cmd):
         Usage: create_room <room_type> <room_name>...
         
         options:
-            -<room_type> : office | living_space
+            -<room_type> : office|living_space
             -<room_name> : room name to create
         """
         if arg['<room_type>'] == 'office':
@@ -95,8 +95,11 @@ class Runner(cmd.Cmd):
         
     @docopt_cmd    
     def do_add_person(self, arg):
-        "Usage: add_person <person_name> <fellow|staff> [accommodation]"
-        print(arg)
+        """
+        Usage: add_person <person_name> (<fellow> | <staff>) [-a=<accommodation>]
+       
+        """
+        print("This Feature is still under development")
        
         
     @docopt_cmd    
