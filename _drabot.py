@@ -79,6 +79,7 @@ class Runner(cmd.Cmd):
     def do_create_room(self, arg):
         """
         Usage: create_room <room_type> <room_name>...
+        
         options:
             -<room_type> : office | living_space
             -<room_name> : room name to create
@@ -89,8 +90,7 @@ class Runner(cmd.Cmd):
         elif arg['<room_type>'] == 'living_space':
             for room_name in arg['<room_name>']:
                 room.create_room(arg['<room_type>'], room_name)
-        #elif arg['<room_type>'] != 'office' or arg['<room_type>'] != 'living space':
-         #   return 'Invalid room selection.'
+     
            
         
     @docopt_cmd    
