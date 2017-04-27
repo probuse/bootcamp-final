@@ -79,11 +79,12 @@ class Room(object):
             for i in self.office_room_names:
                 if (6 - self.office_room_count[i]) != 0:
                     available_rooms.append(i)
-            office_name = available_rooms[random.randint(0, len(available_rooms)-1)]
-            return office_name
+            if len(available_rooms) > 0:
+                office_name = available_rooms[random.randint(0, len(available_rooms)-1)]
+                return office_name
+            return 'All created rooms in for office space full. Please create a new room'
             
         elif room_type == "living_space":
-            available_rooms[:] = []
             for i in self.living_room_names:
                 if (4 - self.living_space_count[i]) != 0:
                     available_rooms.append(i)
