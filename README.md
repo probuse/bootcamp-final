@@ -5,3 +5,8 @@
     
 ### Drabot uses [docopt](http://docopt.org/) a command-line interface description langauge
     
+### Usage:
+    In the command line run the following command
+    _drabot.py -i
+   This Takes you to the interactive mode of the application.
+   While in the interactive mode you can use the **help** keyword to find the commands that drabot supports.
