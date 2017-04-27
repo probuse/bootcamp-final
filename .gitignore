@@ -4,4 +4,5 @@ test_drabot.py~
 bin
 lib/python3.4
 pip-selfcheck.json
-
+*.py~
+drabot/__pycache__/_room.cpython-34.pyc
