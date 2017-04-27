@@ -5,28 +5,26 @@ class Room(object):
         self.office_room_names = []
         self.living_room_names = []
         self.andelans = 0
-        self.office_room_count = {}
-        self.living_space_count = {}
+        self.office_room_people = {}
+        self.living_room_people = {}
         
-    def create_room(self, room_type, *room_name):
+    def create_room(self, room_type, *room_names):
         """Creates a room in the Dojo. 
         Can create as many rooms as specified by room_name"""
-        #unique_room_name = set(room_name) - for unique names
-        
         if room_type.lower() == 'office':
-            for i in room_name:
-                if i in self.office_room_names:
-                    return 'Room {} already created'.format(i)
-                self.office_room_names.append(i)
-                self.office_room_count[i] = 0
-                print("An office called {} has been successfully created".format(i))
+            for room_name in room_names:
+                if room_name in self.office_room_names:
+                    return 'Room {} already created'.format(room_name)
+                self.office_room_names.append(room_name)
+                self.office_room_people[room_name] = []
+                print("An office called {} has been successfully created".format(room_name))
         elif room_type.lower() == 'living_space':
-            for i in room_name:
-                if i in self.living_room_names:
-                    return 'Room {} already created'.format(i)
-                self.living_room_names.append(i)
-                self.living_space_count[i] = 0
-                print("A Living space called {} has been successfully created".format(i))
+            for room_name in room_names:
+                if room_name in self.living_room_names:
+                    return 'Room {} already created'.format(room_name)
+                self.living_room_names.append(room_name)
+                self.living_room_people[room_name] = []
+                print("A Living space called {} has been successfully created".format(room_name))
         else:
             return "Room Type not in the Dojo"
             
@@ -34,7 +32,7 @@ class Room(object):
         "Adds person to the system"
         if position.lower() == "staff":
             office_name = self.room_allocator('office')
-            self.office_room_count[office_name] += 1
+            self.office_room_people[office_name].append(person_name)
             short_name = person_name.split()    
             output = """\
             Staff {0} has been successfully added.
@@ -45,9 +43,9 @@ class Room(object):
         elif position.lower() == "fellow":
             if accommodation == 'Y':
                 living_space_name = self.room_allocator('living_space')
-                self.living_space_count[living_space_name] += 1
+                self.living_room_people[living_space_name].append(person_name)
                 office_name = self.room_allocator('office')
-                self.office_room_count[office_name] += 1
+                self.office_room_people[office_name].append(person_name)
                 short_name = person_name.split()
                 output = """\
                 Fellow {0} has been successfully added.
@@ -57,7 +55,7 @@ class Room(object):
                 return output
             elif accommodation == 'N':
                 office_name = self.room_allocator('office')
-                self.office_room_count[office_name] += 1
+                self.office_room_people[office_name].append(person_name)
                 short_name = person_name.split()    
                 output = """\
                 Fellow {0} has been successfully added.
@@ -76,18 +74,18 @@ class Room(object):
         available_rooms = []
         if room_type == "office":
             self.andelans += 1
-            for i in self.office_room_names:
-                if (6 - self.office_room_count[i]) != 0:
-                    available_rooms.append(i)
+            for office_room_name in self.office_room_names:
+                if (6 - len(self.office_room_people.values())) != 0:
+                    available_rooms.append(office_room_name)
             if len(available_rooms) > 0:
                 office_name = available_rooms[random.randint(0, len(available_rooms)-1)]
                 return office_name
             return 'All created rooms in for office space full. Please create a new room'
             
         elif room_type == "living_space":
-            for i in self.living_room_names:
-                if (4 - self.living_space_count[i]) != 0:
-                    available_rooms.append(i)
+            for living_room_names in self.living_room_names:
+                if (4 - len(self.living_room_people.values())) != 0:
+                    available_rooms.append(living_room_names)
             if len(available_rooms) > 0:
                 living_space_name = available_rooms[random.randint(0, len(available_rooms)-1)]
                 return living_space_name
