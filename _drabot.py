@@ -84,17 +84,12 @@ class Runner(cmd.Cmd):
             -<room_type> : office|living_space
             -<room_name> : room name to create
         """
-        if arg['<room_type>'] == 'office':
-            for room_name in arg['<room_name>']:
-                return room.create_room(arg['<room_type>'], room_name)
-        elif arg['<room_type>'] == 'living_space':
-            for room_name in arg['<room_name>']:
-                return room.create_room(arg['<room_type>'], room_name)
-        #else:
-            #return 'Invalid room_type'
-     
-           
-        
+        room_names = arg['<room_name>']
+        room_type = arg['<room_type>']
+        for room_name in room_names:
+            print(room.create_room(room_type, room_name))
+        return
+       
     @docopt_cmd    
     def do_add_person(self, arg):
         """
@@ -102,21 +97,9 @@ class Runner(cmd.Cmd):
         """
         person_name = arg['<person_name>']
         position = arg['<fellow>']
-        accomodation = arg['<accommodation>']
-        room.add_person(person_name, position, accommodation)
-        """
-        if arg['<fellow>'] == 'fellow':
-            if arg['<accommodation>'] == 'Y':
-                room.add_person(arg['<person_name>'], arg['<fellow>'], 'Y')
-            elif arg['<accommodation>'] is None:
-                return room.add_person(arg['<person_name>'], arg['<fellow>'])
-            else:
-                return 'Invalid argument'
-        elif arg['<fellow>'] == 'staff':
-            return room.add_person(arg['<person_name>'], arg['<fellow>'])
-        print(arg)
-        print("This Feature is still under development")
-        """
+        accommodation = 'Y' if ('<accommodation>' in arg) and arg['<accommodation>']=='Y' else 'N'
+        print(room.add_person(person_name, position, accommodation))
+   
         
     @docopt_cmd    
     def do_print_room(self, arg):
