@@ -1,7 +1,7 @@
 """
 Usage:
     drabot create_room <room_type> <room_name>...
-    drabot add_person <person_name> <fellow|staff> [-a=accommodation]
+    drabot add_person <person_name> <fellow|staff> [accommodation]
     drabot print_room <room_name>
     drabot print_allocations [-o=filename]
     drabot print_unallocated [-o=filename]
@@ -72,18 +72,55 @@ class Runner(cmd.Cmd):
     """
     prompt = '(drabot) '
     
-    """
-    go into docopt mode
-    accept commands
-    print back output. 
-    """ 
     @docopt_cmd
-    def do_create_room(self, room_type, *room_name):
-        "create_room <room_type> <room_name>..."
-        return room.create_room(room_type, *room_name)
+    def do_create_room(self, arg):
+        "Usage: create_room <room_type> <room_name>..."
+        print("\nThis Feature is still under development\n")
+        #return room.create_room(room_type, *room_name)
+        
     @docopt_cmd    
-    def do_add_person(self, room_type, room_name):
+    def do_add_person(self, arg):
+        "Usage: add_person <person_name> <fellow|staff> [accommodation]"
+        print(arg)
+       
+        
+    @docopt_cmd    
+    def do_print_room(self, arg):
+        "Usage: print_room <room_name>"
         print("This Feature is still under development")
+       
+    @docopt_cmd    
+    def do_print_allocations(self, arg):
+        "Usage: print_allocations [-o=filename]"
+        print("This Feature is still under development")
+        
+    @docopt_cmd    
+    def do_print_unallocated(self, arg):
+        "Usage: print_unallocated [-o=filename]"
+        print("No unallocated people. Everyone that joins Andela is allocated a random office")
+        
+    @docopt_cmd    
+    def do_reallocate_person(self, arg):
+        "Usage: reallocate_person <person_identifier> <room_name>"
+        print("This Feature is still under development")
+       
+       
+    @docopt_cmd    
+    def do_load_people(self, arg):
+        "Usage: load_people"
+        print("This Feature is still under development")
+        
+    @docopt_cmd    
+    def do_save_state(self, arg):
+        "Usage: save_state [--db=sqlite_database]"
+        print("This Feature is still under development")
+       
+    @docopt_cmd    
+    def do_load_state(self, arg):
+        "Usage: load_state <sqlite_database>"
+        print("This Feature is still under development")
+       
+       
         
         
         
