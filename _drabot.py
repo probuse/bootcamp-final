@@ -25,11 +25,17 @@ from docopt import docopt, DocoptExit
 
 sys.path.append('drabot')
 
-from _room import Room 
+from _room import Room
+from office import Office
+from living_space import LivingSpace 
+
+
+room = Room()
+office = Office()
 """
 from drabot.person import Person
 from drabot.living_space import LivingSpace
-from drabot.office import Office
+
 from drabot.staff import Staff
 from drabot.fellow import Fellow
 from drabot._dojo import Dojo
@@ -65,8 +71,6 @@ def docopt_cmd(func):
     return fn
 
 
-room = Room()
-
 class Runner(cmd.Cmd):
     intro = """\
     Welcome to drabot command line guide
@@ -87,7 +91,7 @@ class Runner(cmd.Cmd):
         room_names = arg['<room_name>']
         room_type = arg['<room_type>']
         for room_name in room_names:
-            print(room.create_room(room_type, room_name))
+            room.create_room(room_type, room_name)
         return
        
     @docopt_cmd    
@@ -104,7 +108,15 @@ class Runner(cmd.Cmd):
     @docopt_cmd    
     def do_print_room(self, arg):
         "Usage: print_room <room_name>"
-        print("This Feature is still under development")
+        room_name = arg['<room_name>']
+        if room_name in room.office_room_names:
+            room.get_office_allocation(room_name)
+            if room_name in room.living_room_names:
+                room.get_living_space_allocation(room_name)
+        elif room_name in room.living_room_names:
+            room.get_living_space_allocation(room_name)
+        else:
+            return 'Room name {} does not exist in the Dojo'.format(room_name)
        
     @docopt_cmd    
     def do_print_allocations(self, arg):
