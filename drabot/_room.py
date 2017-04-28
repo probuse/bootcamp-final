@@ -50,7 +50,7 @@ class Room(object):
                 output = """\
                 Fellow {0} has been successfully added.
                 {1} has been allocated the office {2}
-                {2} has been allocated the livingspace {3}
+                {1} has been allocated the livingspace {3}
                 """.format(person_name, short_name[0], office_name, living_space_name)
                 return output
             elif accommodation == 'N':
@@ -66,7 +66,7 @@ class Room(object):
                 return "Wrong optional argument, argument should either be Y or N"
                 
         else: 
-            return "Only Fellows and stuff can be added to the system"
+            return "Only fellows and staff can be added to the system"
             
         
     def room_allocator(self, room_type):
@@ -93,3 +93,25 @@ class Room(object):
             
         else:
             return "Invalid room type, room type is either an office or living space."
+            
+    def get_office_allocation(self, room_name):
+        "outputs names of people in a certain office room"
+        if len(self.office_room_people[room_name]) > 0:
+            print("Office {} has the following occupants: ".format(room_name))
+            for office_name in self.office_room_people.keys():
+                if room_name == office_name:
+                    for person_name in self.office_room_people[office_name]:
+                        print ('\t*' + person_name)
+        else:
+            print("No occupants in office {}".format(room_name))
+            
+    def get_living_space_allocation(self, room_name):
+        "outputs names of people in a certain living room"
+        if len(self.living_room_people[room_name]) > 0:
+            print("Living room {} has the following occupants: ".format(room_name))
+            for living_space_name in self.living_room_people.keys():
+                if room_name == living_space_name:
+                    for person_name in self.living_room_people[living_space_name]:
+                        print ('\t*' + person_name)
+        else:
+            print("No occupants in Living space {}".format(room_name))
