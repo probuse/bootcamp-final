@@ -1,13 +1,11 @@
-from room import Room
+from _room import Room
 
-room = Room()
 class Person(object):
     "class Person takes in one positional argument names"
-    def __init__(self, name):
+    def __init__(self, name, age):
         self.name = name
-        self.office_people_counter = room.office_people_counter
+        self.age = age
         
-    
-        
-per = Person('pen')
-print (per.office_people_counter)
+    def check_age(self):
+        if self.age >= 18:
+            return True
