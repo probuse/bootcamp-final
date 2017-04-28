@@ -7,7 +7,7 @@ from person import Person
 
 
 class TestCreateRoom(unittest.TestCase):
-    def setup(self):
+    def setUp(self):
         self.room = Room()
     
     def test_create_room_successfully(self):
@@ -25,15 +25,16 @@ class TestCreateRoom(unittest.TestCase):
     
     def test_living_room_created_successfully(self):
         initial_room_count = len(self.room.living_room_names)
-        many_rooms = self.room.create_room('living space', 'blue', 'black', 'red')
+        many_rooms = self.room.create_room('living_space', 'blue', 'black', 'red')
         new_room_count = len(self.room.living_room_names)
         self.assertEqual(new_room_count - initial_room_count, 3)
     
     def test_add_person_successfully(self):
+        office_name = self.room.create_room('office', 'blue')
         initial_andelan_count = self.room.andelans
         phillip = self.room.add_person('Phillip', 'staff')
         new_andelan_count = self.room.andelans
-        self.assertEqual(new_room_count - initial_room_count, 1)
+        self.assertEqual(new_andelan_count - initial_andelan_count, 1)
         
     def test_person_is_above_18(self):
         person = Person('probuse', 40)
