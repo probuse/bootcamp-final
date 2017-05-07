@@ -74,7 +74,7 @@ def docopt_cmd(func):
 class Runner(cmd.Cmd):
     intro = """\
     Welcome to drabot command line guide
-    Drabot allocates rooms to to andelans.
+    Drabot randomly allocates rooms to to andelans.
     Type help for a list of commands.
     """
     prompt = '(drabot) '
@@ -90,9 +90,13 @@ class Runner(cmd.Cmd):
         """
         room_names = arg['<room_name>']
         room_type = arg['<room_type>']
-        for room_name in room_names:
-            room.create_room(room_type, room_name)
-        return
+        room_types = ('office', 'living_space')
+        if room_type not in room_types:
+            print("""room_type should be office or living_space, not {},
+            read help create_room""".format(room_type))
+        else:
+            for room_name in room_names:
+                room.create_room(room_type, room_name)
        
     @docopt_cmd    
     def do_add_person(self, arg):
@@ -121,6 +125,7 @@ class Runner(cmd.Cmd):
     @docopt_cmd    
     def do_print_allocations(self, arg):
         "Usage: print_allocations [-o=filename]"
+        
         print("This Feature is still under development")
         
     @docopt_cmd    
