@@ -53,6 +53,17 @@ class TestCreateRoom(unittest.TestCase):
         brain = self.room.add_person('brain', 'staff')
         self.assertListEqual(['brain'], self.room.office_room_people['blue'])
         
+    def test_number_of_people_in_office_less_or_equal_6(self):
+        orange = self.room.create_room('office', 'orange')
+        simon = self.room.add_person('simon', 'fellow')
+        peter = self.room.add_person('peter', 'staff')
+        shyla = self.room.add_person('shyla', 'staff')
+        bruce = self.room.add_person('bruce', 'fellow')
+        david = self.room.add_person('david', 'staff')
+        sam = self.room.add_person('sam', 'staff')
+        pro = self.room.add_person('pro', 'staff')
+        self.assertEqual(len(self.room.office_room_people['orange']), 6)
+        
    
 if __name__=="__main__":
     unittest.main()         
