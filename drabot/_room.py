@@ -10,7 +10,7 @@ class Room(object):
         
     def create_room(self, room_type, *room_names):
         """Creates a room in the Dojo. 
-        Can create as many rooms as specified by room_name"""
+        Can create as many rooms as specified by room_names"""
         if room_type.lower() == 'office':
             for room_name in room_names:
                 if room_name in self.office_room_names:
@@ -31,37 +31,48 @@ class Room(object):
     def add_person(self, person_name, position, accommodation='N'):
         "Adds person to the system"
         if position.lower() == "staff":
-            office_name = self.room_allocator('office')
-            self.office_room_people[office_name].append(person_name)
-            short_name = person_name.split()    
-            output = """\
-            Staff {0} has been successfully added.
-            {1} has been allocated the office {2}
-            """.format(person_name, short_name[0], office_name)
-            return output
-            
-        elif position.lower() == "fellow":
-            if accommodation == 'Y':
-                living_space_name = self.room_allocator('living_space')
-                self.living_room_people[living_space_name].append(person_name)
-                office_name = self.room_allocator('office')
-                self.office_room_people[office_name].append(person_name)
-                short_name = person_name.split()
-                output = """\
-                Fellow {0} has been successfully added.
-                {1} has been allocated the office {2}
-                {1} has been allocated the livingspace {3}
-                """.format(person_name, short_name[0], office_name, living_space_name)
-                return output
-            elif accommodation == 'N':
+            try:
                 office_name = self.room_allocator('office')
                 self.office_room_people[office_name].append(person_name)
                 short_name = person_name.split()    
                 output = """\
-                Fellow {0} has been successfully added.
+                Staff {0} has been successfully added.
                 {1} has been allocated the office {2}
                 """.format(person_name, short_name[0], office_name)
                 return output
+            except KeyError:
+                print('Can not add {}'.format(person_name))
+                return 'No available space in office rooms.'
+            
+        elif position.lower() == "fellow":
+            try:
+                if accommodation == 'Y':
+                    living_space_name = self.room_allocator('living_space')
+                    self.living_room_people[living_space_name].append(person_name)
+                    office_name = self.room_allocator('office')
+                    self.office_room_people[office_name].append(person_name)
+                    short_name = person_name.split()
+                    output = """\
+                    Fellow {0} has been successfully added.
+                    {1} has been allocated the office {2}
+                    {1} has been allocated the livingspace {3}
+                    """.format(person_name, short_name[0], office_name, living_space_name)
+                    return output
+       
+                elif accommodation == 'N':
+                    office_name = self.room_allocator('office')
+                    self.office_room_people[office_name].append(person_name)
+                    short_name = person_name.split()    
+                    output = """\
+                    Fellow {0} has been successfully added.
+                    {1} has been allocated the office {2}
+                    """.format(person_name, short_name[0], office_name)
+                    return output
+            except KeyError:
+                print('Can not add {}'.format(person_name))
+                if accommodation == 'Y': 
+                    return 'No available space in living rooms.'
+                return 'No available space in office rooms.'
             else:
                 return "Wrong optional argument, argument should either be Y or N"
                 
@@ -75,7 +86,7 @@ class Room(object):
         if room_type == "office":
             self.andelans += 1
             for office_room_name in self.office_room_names:
-                if (6 - len(self.office_room_people.values())) != 0:
+                if len(self.office_room_people[office_room_name]) < 6:
                     available_rooms.append(office_room_name)
             if len(available_rooms) > 0:
                 office_name = available_rooms[random.randint(0, len(available_rooms)-1)]
@@ -83,9 +94,9 @@ class Room(object):
             return 'All created rooms in for office space full. Please create a new room'
             
         elif room_type == "living_space":
-            for living_room_names in self.living_room_names:
-                if (4 - len(self.living_room_people.values())) != 0:
-                    available_rooms.append(living_room_names)
+            for living_room_name in self.living_room_names:
+                if len(self.living_room_people[living_room_name]) < 4:
+                    available_rooms.append(living_room_name)
             if len(available_rooms) > 0:
                 living_space_name = available_rooms[random.randint(0, len(available_rooms)-1)]
                 return living_space_name

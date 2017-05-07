@@ -47,9 +47,12 @@ class TestCreateRoom(unittest.TestCase):
     def test_name_is_alpha(self):
         person = Person('Ray', 23)
         self.assertTrue(person.name.isalpha())
-    
         
+    def test_show_room_allocation(self):
+        blue = self.room.create_room('office', 'blue')
+        brain = self.room.add_person('brain', 'staff')
+        self.assertListEqual(['brain'], self.room.office_room_people['blue'])
         
-
+   
 if __name__=="__main__":
     unittest.main()         
