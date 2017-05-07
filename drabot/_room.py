@@ -26,7 +26,7 @@ class Room(object):
                 self.living_room_people[room_name] = []
                 print("A Living space called {} has been successfully created".format(room_name))
         else:
-            return "Room Type not in the Dojo"
+            return "Room Type is either office or living_space"
             
     def add_person(self, person_name, position, accommodation='N'):
         "Adds person to the system"
