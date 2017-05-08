@@ -42,10 +42,11 @@ class Room(object):
                 return output
             except KeyError:
                 print('Can not add {}'.format(person_name))
-                #if office_name == None:
-                    #return '{} already exists in available office space'.format(
-                        #person_name)
-                return 'No available space in office rooms.'
+                if office_name == 'in_room':
+                    return '{} already exists in available office space'.format(
+                        person_name)
+                if office_name == 'room_full':
+                    return 'No available space in office rooms.'
             
         elif position.lower() == "fellow":
             try:
@@ -94,11 +95,17 @@ class Room(object):
         available_rooms = []
         if room_type == "office":
             self.andelans += 1
-            for office_room_name in self.office_room_names:
+            for office_room_name in self.office_room_people.keys():
+                room_full = True
+                in_room = False
                 if len(self.office_room_people[office_room_name]) < 6:
+                    room_full = False
                     if person_name in self.office_room_people[office_room_name]:
+                        in_room = True
                         continue
                     available_rooms.append(office_room_name)
+            if room_full: return 'room_full'
+            if in_room: return 'in_room'
             if len(available_rooms) > 0:
                 office_name = available_rooms[random.randint(0, len(available_rooms)-1)]
                 return office_name
@@ -139,3 +146,11 @@ class Room(object):
                         print ('\t*' + person_name)
         else:
             print("No occupants in Living space {}".format(room_name))
+            
+'''            
+d4 = Room()
+d4.create_room('office', 'blue')
+d4.add_person('pro', 'staff')
+d4.add_person('pro2', 'staff')
+print(d4.add_person('pro2', 'staff'))
+'''
