@@ -112,11 +112,17 @@ class Room(object):
             return 'All created rooms in for office space full. Please create a new room'
             
         elif room_type == "living_space":
-            for living_room_name in self.living_room_names:
+            for living_room_name in self.office_room_people.keys():
+                room_full = True
+                in_room = False
                 if len(self.living_room_people[living_room_name]) < 4:
+                    room_full = True
                     if person_name in self.office_room_people[living_room_name]:
+                        in_room = True
                         continue
                     available_rooms.append(living_room_name)
+            if room_full: return 'room_full'
+            if in_room: return 'in_room'
             if len(available_rooms) > 0:
                 living_space_name = available_rooms[random.randint(0, len(available_rooms)-1)]
                 return living_space_name
