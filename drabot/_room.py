@@ -32,7 +32,7 @@ class Room(object):
         "Adds person to the system"
         if position.lower() == "staff":
             try:
-                office_name = self.room_allocator('office')
+                office_name = self.room_allocator(person_name, 'office')
                 self.office_room_people[office_name].append(person_name)
                 short_name = person_name.split()    
                 output = """\
@@ -42,14 +42,20 @@ class Room(object):
                 return output
             except KeyError:
                 print('Can not add {}'.format(person_name))
+                #if office_name == None:
+                    #return '{} already exists in available office space'.format(
+                        #person_name)
                 return 'No available space in office rooms.'
             
         elif position.lower() == "fellow":
             try:
                 if accommodation == 'Y':
-                    living_space_name = self.room_allocator('living_space')
+                    living_space_name = self.room_allocator(person_name, 'living_space')
+                    if person_name in self.living_room_people[living_space_name]:
+                        return '{} already exists in living room {}'.format(
+                            person_name, living_space_name)
                     self.living_room_people[living_space_name].append(person_name)
-                    office_name = self.room_allocator('office')
+                    office_name = self.room_allocator(person_name, 'office')
                     self.office_room_people[office_name].append(person_name)
                     short_name = person_name.split()
                     output = """\
@@ -60,7 +66,10 @@ class Room(object):
                     return output
        
                 elif accommodation == 'N':
-                    office_name = self.room_allocator('office')
+                    office_name = self.room_allocator(person_name, 'office')
+                    if person_name in self.office_room_people[office_name]:
+                        return '{} already exists in office {}'.format(
+                            person_name, office_name)
                     self.office_room_people[office_name].append(person_name)
                     short_name = person_name.split()    
                     output = """\
@@ -80,13 +89,15 @@ class Room(object):
             return "Only fellows and staff can be added to the system"
             
         
-    def room_allocator(self, room_type):
+    def room_allocator(self, person_name, room_type):
         "allocates rooms"
         available_rooms = []
         if room_type == "office":
             self.andelans += 1
             for office_room_name in self.office_room_names:
                 if len(self.office_room_people[office_room_name]) < 6:
+                    if person_name in self.office_room_people[office_room_name]:
+                        continue
                     available_rooms.append(office_room_name)
             if len(available_rooms) > 0:
                 office_name = available_rooms[random.randint(0, len(available_rooms)-1)]
@@ -96,6 +107,8 @@ class Room(object):
         elif room_type == "living_space":
             for living_room_name in self.living_room_names:
                 if len(self.living_room_people[living_room_name]) < 4:
+                    if person_name in self.office_room_people[living_room_name]:
+                        continue
                     available_rooms.append(living_room_name)
             if len(available_rooms) > 0:
                 living_space_name = available_rooms[random.randint(0, len(available_rooms)-1)]
