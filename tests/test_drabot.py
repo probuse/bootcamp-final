@@ -72,6 +72,14 @@ class TestCreateRoom(unittest.TestCase):
         pro = self.room.add_person('pro', 'staff')
         self.assertEqual(len(self.room.office_room_people['orange']), 6)
         
+    def test_people_added_are_unique_per_room(self):
+        blue = self.room.create_room('office', 'drabot')
+        moses = self.room.add_person('moses', 'fellow')
+        moses = self.room.add_person('moses', 'fellow')
+        moses1 = self.room.add_person('moses1', 'fellow')
+        self.assertListEqual(self.room.office_room_people['drabot'], ['moses', 'moses1'])
+        
+        
    
 if __name__=="__main__":
     unittest.main()         
