@@ -43,18 +43,15 @@ class Room(object):
             except KeyError:
                 print('Can not add {}'.format(person_name))
                 if office_name == 'in_room':
-                    return '{} already exists in available office space'.format(
+                    return '{} already exists in the system'.format(
                         person_name)
-                if office_name == 'room_full':
+                if office_name == 'office_room_full':
                     return 'No available space in office rooms.'
             
         elif position.lower() == "fellow":
-            try:
-                if accommodation == 'Y':
+            if accommodation == 'Y':
+                try:
                     living_space_name = self.room_allocator(person_name, 'living_space')
-                    if person_name in self.living_room_people[living_space_name]:
-                        return '{} already exists in living room {}'.format(
-                            person_name, living_space_name)
                     self.living_room_people[living_space_name].append(person_name)
                     office_name = self.room_allocator(person_name, 'office')
                     self.office_room_people[office_name].append(person_name)
@@ -65,12 +62,23 @@ class Room(object):
                     {1} has been allocated the livingspace {3}
                     """.format(person_name, short_name[0], office_name, living_space_name)
                     return output
-       
-                elif accommodation == 'N':
+                except KeyError:
+                    print('Can not add {}'.format(person_name))
+                    if living_space_name == 'living_room_full':
+                        return 'No available space in living rooms'
+                    if living_space_name == 'in_room':
+                        return '{} already exists in the system'.format(
+                            person_name)
+                    if office_name == 'office_room_full':
+                        return 'No available space in office rooms.'
+                    if office_name == 'in_room':
+                        return '{} already exists in the system'.format(
+                            person_name)
+                    
+                        
+            elif accommodation == 'N':
+                try:
                     office_name = self.room_allocator(person_name, 'office')
-                    if person_name in self.office_room_people[office_name]:
-                        return '{} already exists in office {}'.format(
-                            person_name, office_name)
                     self.office_room_people[office_name].append(person_name)
                     short_name = person_name.split()    
                     output = """\
@@ -78,11 +86,13 @@ class Room(object):
                     {1} has been allocated the office {2}
                     """.format(person_name, short_name[0], office_name)
                     return output
-            except KeyError:
-                print('Can not add {}'.format(person_name))
-                if accommodation == 'Y': 
-                    return 'No available space in living rooms.'
-                return 'No available space in office rooms.'
+                except KeyError:
+                    print('Can not add {}'.format(person_name))
+                    if office_name == 'in_room':
+                        return '{} already exists in the system'.format(
+                            person_name)
+                    if office_name == 'office_room_full':
+                        return 'No available space in office rooms.'
             else:
                 return "Wrong optional argument, argument should either be Y or N"
                 
@@ -96,15 +106,15 @@ class Room(object):
         if room_type == "office":
             self.andelans += 1
             for office_room_name in self.office_room_people.keys():
-                room_full = True
+                office_room_full = True
                 in_room = False
                 if len(self.office_room_people[office_room_name]) < 6:
-                    room_full = False
+                    office_room_full = False
                     if person_name in self.office_room_people[office_room_name]:
                         in_room = True
                         continue
                     available_rooms.append(office_room_name)
-            if room_full: return 'room_full'
+            if office_room_full: return 'office_room_full'
             if in_room: return 'in_room'
             if len(available_rooms) > 0:
                 office_name = available_rooms[random.randint(0, len(available_rooms)-1)]
@@ -112,16 +122,16 @@ class Room(object):
             return 'All created rooms in for office space full. Please create a new room'
             
         elif room_type == "living_space":
-            for living_room_name in self.office_room_people.keys():
-                room_full = True
+            for living_room_name in self.living_room_people.keys():
+                living_room_full = True
                 in_room = False
                 if len(self.living_room_people[living_room_name]) < 4:
-                    room_full = True
+                    living_room_full = False
                     if person_name in self.office_room_people[living_room_name]:
                         in_room = True
                         continue
                     available_rooms.append(living_room_name)
-            if room_full: return 'room_full'
+            if living_room_full: return 'living_room_full'
             if in_room: return 'in_room'
             if len(available_rooms) > 0:
                 living_space_name = available_rooms[random.randint(0, len(available_rooms)-1)]
