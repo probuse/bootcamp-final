@@ -84,8 +84,12 @@ class TestCreateRoom(unittest.TestCase):
         
     def test_show_room_allocation(self):
         blue = self.room.create_room('office', 'blue')
+        blue = self.room.create_room('living_space', 'blue')
         brain = self.room.add_person('brain', 'staff')
-        self.assertListEqual(['brain'], self.room.office_room_people['blue'])
+        prosper = self.room.add_person('prosper', 'fellow', 'Y')
+        ray = self.room.add_person('ray', 'fellow', 'Y')
+        self.assertListEqual(['brain', 'prosper', 'ray'], self.room.office_room_people['blue'])
+        self.assertListEqual(['prosper', 'ray'], self.room.living_room_people['blue'])
         
     def test_number_of_people_in_office_less_or_equal_6(self):
         orange = self.room.create_room('office', 'orange')
