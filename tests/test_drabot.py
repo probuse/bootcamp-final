@@ -47,11 +47,15 @@ class TestCreateRoom(unittest.TestCase):
         
     def test_room_type_is_office(self):
         masaka = self.room.create_room('offic', 'masaka')
-        self.assertEqual(masaka, "Room Type is either office or living_space")
+        masaka = self.room.create_room('office', 'masaka')
+        self.assertEqual(len(self.room.office_room_names), 1)
+        self.assertEqual(len(self.room.living_room_names), 0)
         
     def test_room_type_is_living_space(self):
         villa = self.room.create_room('discotheque', 'villa')
-        self.assertEqual(villa, "Room Type is either office or living_space")
+        villa = self.room.create_room('living_space', 'villa')
+        self.assertEqual(len(self.room.living_room_names), 1)
+        self.assertEqual(len(self.room.office_room_names), 0)
     
     def test_living_room_created_successfully(self):
         initial_room_count = len(self.room.living_room_names)
