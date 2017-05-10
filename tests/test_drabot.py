@@ -17,11 +17,33 @@ class TestCreateRoom(unittest.TestCase):
         new_room_count = len(self.room.office_room_names)
         self.assertEqual(new_room_count - initial_room_count, 1)
         
-    def test_multiple_rooms_created_successfully(self):
+    def test_create_unique_rooms_per_office_room_type(self):
+        initial_room_count = len(self.room.office_room_names)
+        orange = self.room.create_room('office', 'orange')
+        orange = self.room.create_room('office', 'orange')
+        drabot = self.room.create_room('office', 'drabot')
+        new_room_count = len(self.room.office_room_names)
+        self.assertEqual((new_room_count - initial_room_count), 2)
+        
+    def test_create_unique_rooms_per_living_room_type(self):
+        initial_room_count = len(self.room.living_room_names)
+        orange = self.room.create_room('living_space', 'orange')
+        orange = self.room.create_room('living_space', 'orange')
+        drabot = self.room.create_room('living_space', 'drabot')
+        new_room_count = len(self.room.living_room_names)
+        self.assertEqual((new_room_count - initial_room_count), 2)
+        
+    def test_multiple_office_rooms_created_successfully(self):
         initial_room_count = len(self.room.office_room_names)
         many_rooms = self.room.create_room('office', 'blue', 'black', 'red')
         new_room_count = len(self.room.office_room_names)
         self.assertEqual(new_room_count - initial_room_count, 3)
+        
+    def test_multiple_living_rooms_created_successfully(self):
+        initial_room_count = len(self.room.living_room_names)
+        many_rooms = self.room.create_room('living_space', 'blue', 'black', 'red')
+        new_room_count = len(self.room.living_room_names)
+        self.assertEqual((new_room_count - initial_room_count), 3)
         
     def test_room_type_is_office(self):
         masaka = self.room.create_room('offic', 'masaka')
@@ -80,6 +102,6 @@ class TestCreateRoom(unittest.TestCase):
         self.assertListEqual(self.room.office_room_people['drabot'], ['moses', 'moses1'])
         
         
-   
+    
 if __name__=="__main__":
     unittest.main()         
