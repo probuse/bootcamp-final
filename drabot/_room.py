@@ -13,18 +13,25 @@ class Room(object):
         Can create as many rooms as specified by room_names"""
         if room_type.lower() == 'office':
             for room_name in room_names:
-                if room_name in self.office_room_names:
-                    return 'Room {} already created'.format(room_name)
-                self.office_room_names.append(room_name)
-                self.office_room_people[room_name] = []
-                print("An office called {} has been successfully created".format(room_name))
+                if room_name in self.office_room_people.keys():
+                    print('An office room {} already created'.format(
+                        room_name))
+                else:
+                    self.office_room_names.append(room_name)
+                    self.office_room_people[room_name] = []
+                    print("An office called {} has been successfully created".format(
+                        room_name))
+            
         elif room_type.lower() == 'living_space':
             for room_name in room_names:
-                if room_name in self.living_room_names:
-                    return 'Room {} already created'.format(room_name)
-                self.living_room_names.append(room_name)
-                self.living_room_people[room_name] = []
-                print("A Living space called {} has been successfully created".format(room_name))
+                if room_name in self.living_room_people.keys():
+                    print('Living room {} already created'.format(
+                        room_name))
+                else:
+                    self.living_room_names.append(room_name)
+                    self.living_room_people[room_name] = []
+                    print("A Living space called {} has been successfully created".format(
+                        room_name))
         else:
             return "Room Type is either office or living_space"
             
@@ -51,16 +58,22 @@ class Room(object):
         elif position.lower() == "fellow":
             if accommodation == 'Y':
                 try:
-                    living_space_name = self.room_allocator(person_name, 'living_space')
-                    self.living_room_people[living_space_name].append(person_name)
-                    office_name = self.room_allocator(person_name, 'office')
+                    living_space_name = self.room_allocator(
+                                            person_name, 
+                                            'living_space')
+                    self.living_room_people[living_space_name].append(
+                        person_name)
+                    office_name = self.room_allocator(person_name, 
+                                                        'office')
                     self.office_room_people[office_name].append(person_name)
                     short_name = person_name.split()
                     output = """\
                     Fellow {0} has been successfully added.
                     {1} has been allocated the office {2}
                     {1} has been allocated the livingspace {3}
-                    """.format(person_name, short_name[0], office_name, living_space_name)
+                    """.format(person_name, short_name[0], 
+                                office_name, 
+                                living_space_name)
                     return output
                 except KeyError:
                     print('Can not add {}'.format(person_name))
@@ -163,10 +176,11 @@ class Room(object):
         else:
             print("No occupants in Living space {}".format(room_name))
             
-'''            
-d4 = Room()
-d4.create_room('office', 'blue')
-d4.add_person('pro', 'staff')
-d4.add_person('pro2', 'staff')
-print(d4.add_person('pro2', 'staff'))
-'''
+if __name__ == "__main__":
+                        
+    d4 = Room()
+    d4.create_room('office', 'blue')
+    d4.add_person('pro', 'staff')
+    d4.add_person('pro2', 'staff')
+    print(d4.add_person('pro2', 'staff'))
+    
