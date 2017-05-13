@@ -84,6 +84,7 @@ class TestCreateRoom(unittest.TestCase):
         
     def test_show_room_allocation(self):
         blue = self.room.create_room('office', 'blue')
+<<<<<<< HEAD
         blue = self.room.create_room('living_space', 'blue')
         brain = self.room.add_person('brain', 'staff')
         prosper = self.room.add_person('prosper', 'fellow', 'Y')
@@ -111,5 +112,11 @@ class TestCreateRoom(unittest.TestCase):
         
         
     
+=======
+        brain = self.room.add_person('brain', 'staff')
+        occupants_in_blue = self.room.get_office_allocation('blue')
+        self.assertListEqual(['brain'], self.room.office_room_people['blue'])
+        
+>>>>>>> 9b0ee5937bb4e66e1a6d65f1d5a5b8e81740060f
 if __name__=="__main__":
     unittest.main()         
