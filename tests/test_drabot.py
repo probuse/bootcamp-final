@@ -115,6 +115,16 @@ class TestCreateRoom(unittest.TestCase):
         occupants_in_blue = self.room.get_office_allocation('drabot')
         self.assertListEqual(['brain'], self.room.office_room_people['drabot'])
         
+    def test_print_allocations_on_screen(self):
+        drabot = self.room.create_room('office', 'drabot')
+        blue = self.room.create_room('living_space', 'blue')
+        pat = self.room.add_person('pat', 'staff')
+        linda = self.room.add_person('linda', 'fellow', 'Y')
+        melisa = self.room.add_person('melisa', 'staff')
+        scopio = self.room.add_person('scopio', 'fellow')
+        self.assertListEqual(self.room.office_room_people['drabot'], ['pat', 'linda', 'melisa', 'scopio'])
+        self.assertListEqual(self.room.living_room_people['blue'], ['linda'])
+        
         
 if __name__=="__main__":
     unittest.main()         
