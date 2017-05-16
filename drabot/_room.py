@@ -176,6 +176,31 @@ class Room(object):
         else:
             print("No occupants in Living space {}".format(room_name))
             
+    def print_allocations(self, filename=None):
+        """
+        Prints a list of allocations on the screen.
+        if file name is not None, these allocations are saved to a text file.
+        returns a tuple with a list of office room and living_space members.
+        """
+        office_room = []
+        living_room = []
+        for room_name in self.office_room_people.keys():
+            print(room_name)
+            print('-'*70)
+            
+            for member in self.office_room_people[room_name]:
+                print(member, end=' ')
+                office_room.append(member)
+                
+        for room_name in self.living_room_people.keys():
+            print(room_name)
+            print('-'*70)
+            
+            for member in self.living_room_people[room_name]:
+                print(member, end=' ')
+                living_room.append(member)
+                
+        return office_room, living_room       
 if __name__ == "__main__":
                         
     d4 = Room()
