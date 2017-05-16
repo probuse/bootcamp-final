@@ -140,7 +140,7 @@ class Room(object):
                 in_room = False
                 if len(self.living_room_people[living_room_name]) < 4:
                     living_room_full = False
-                    if person_name in self.office_room_people[living_room_name]:
+                    if person_name in self.living_room_people[living_room_name]:
                         in_room = True
                         continue
                     available_rooms.append(living_room_name)
