@@ -122,8 +122,9 @@ class TestCreateRoom(unittest.TestCase):
         linda = self.room.add_person('linda', 'fellow', 'Y')
         melisa = self.room.add_person('melisa', 'staff')
         scopio = self.room.add_person('scopio', 'fellow')
-        self.assertListEqual(self.room.office_room_people['drabot'], ['pat', 'linda', 'melisa', 'scopio'])
-        self.assertListEqual(self.room.living_room_people['blue'], ['linda'])
+        self.assertEqual(self.room.print_allocations(), (['pat', 'linda', 'melisa', 'scopio'], ['linda']))
+        
+        
         
         
 if __name__=="__main__":
