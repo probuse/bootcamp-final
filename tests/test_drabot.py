@@ -84,7 +84,6 @@ class TestCreateRoom(unittest.TestCase):
         
     def test_show_room_allocation(self):
         blue = self.room.create_room('office', 'blue')
-<<<<<<< HEAD
         blue = self.room.create_room('living_space', 'blue')
         brain = self.room.add_person('brain', 'staff')
         prosper = self.room.add_person('prosper', 'fellow', 'Y')
@@ -104,19 +103,18 @@ class TestCreateRoom(unittest.TestCase):
         self.assertEqual(len(self.room.office_room_people['orange']), 6)
         
     def test_people_added_are_unique_per_room(self):
-        blue = self.room.create_room('office', 'drabot')
+        drabot = self.room.create_room('office', 'drabot')
         moses = self.room.add_person('moses', 'fellow')
         moses = self.room.add_person('moses', 'fellow')
         moses1 = self.room.add_person('moses1', 'fellow')
         self.assertListEqual(self.room.office_room_people['drabot'], ['moses', 'moses1'])
         
-        
-    
-=======
+    def test_added_person_in_existing_room(self):
+        drabot = self.room.create_room('office', 'drabot')
         brain = self.room.add_person('brain', 'staff')
-        occupants_in_blue = self.room.get_office_allocation('blue')
-        self.assertListEqual(['brain'], self.room.office_room_people['blue'])
+        occupants_in_blue = self.room.get_office_allocation('drabot')
+        self.assertListEqual(['brain'], self.room.office_room_people['drabot'])
         
->>>>>>> 9b0ee5937bb4e66e1a6d65f1d5a5b8e81740060f
+        
 if __name__=="__main__":
     unittest.main()         
