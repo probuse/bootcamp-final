@@ -25,7 +25,7 @@ class Room(object):
         elif room_type.lower() == 'living_space':
             for room_name in room_names:
                 if room_name in self.living_room_people.keys():
-                    print('Living room {} already created'.format(
+                    print('Living room {} alredy created'.format(
                         room_name))
                 else:
                     self.living_room_names.append(room_name)
@@ -38,122 +38,170 @@ class Room(object):
     def add_person(self, person_name, position, accommodation='N'):
         "Adds person to the system"
         if position.lower() == "staff":
+            # if self.check_office_rooms_created():
+            office_name = self.allocate_office_room(person_name)
             try:
-                office_name = self.room_allocator(person_name, 'office')
                 self.office_room_people[office_name].append(person_name)
+            except KeyError:
+                if office_name == 'Name Exists in office':
+                    return 'Name Exists in available free office rooms'
+                if office_name == 'Office Rooms Full':
+                    return 'All Created Office rooms Full'
+                if office_name == 'No Office Rooms':
+                    return 'No Office Rooms Created Yet'
+            else:
                 short_name = person_name.split()    
                 output = """\
                 Staff {0} has been successfully added.
                 {1} has been allocated the office {2}
                 """.format(person_name, short_name[0], office_name)
                 return output
-            except KeyError:
-                print('Can not add {}'.format(person_name))
-                if office_name == 'in_room':
-                    return '{} already exists in the system'.format(
-                        person_name)
-                if office_name == 'office_room_full':
-                    return 'No available space in office rooms.'
-            
+           
         elif position.lower() == "fellow":
-            if accommodation == 'Y':
-                try:
-                    living_space_name = self.room_allocator(
-                                            person_name, 
-                                            'living_space')
-                    self.living_room_people[living_space_name].append(
-                        person_name)
-                    office_name = self.room_allocator(person_name, 
-                                                        'office')
-                    self.office_room_people[office_name].append(person_name)
-                    short_name = person_name.split()
-                    output = """\
-                    Fellow {0} has been successfully added.
-                    {1} has been allocated the office {2}
-                    {1} has been allocated the livingspace {3}
-                    """.format(person_name, short_name[0], 
-                                office_name, 
-                                living_space_name)
-                    return output
-                except KeyError:
-                    print('Can not add {}'.format(person_name))
-                    if living_space_name == 'living_room_full':
-                        return 'No available space in living rooms'
-                    if living_space_name == 'in_room':
-                        return '{} already exists in the system'.format(
-                            person_name)
-                    if office_name == 'office_room_full':
-                        return 'No available space in office rooms.'
-                    if office_name == 'in_room':
-                        return '{} already exists in the system'.format(
-                            person_name)
-                    
-                        
-            elif accommodation == 'N':
-                try:
-                    office_name = self.room_allocator(person_name, 'office')
-                    self.office_room_people[office_name].append(person_name)
-                    short_name = person_name.split()    
-                    output = """\
-                    Fellow {0} has been successfully added.
-                    {1} has been allocated the office {2}
-                    """.format(person_name, short_name[0], office_name)
-                    return output
-                except KeyError:
-                    print('Can not add {}'.format(person_name))
-                    if office_name == 'in_room':
-                        return '{} already exists in the system'.format(
-                            person_name)
-                    if office_name == 'office_room_full':
-                        return 'No available space in office rooms.'
+            office_name = self.allocate_office_room(person_name)
+            try:
+                self.office_room_people[office_name].append(person_name)
+            except KeyError:
+                if office_name == 'Name Exists in office':
+                    return 'Name Exists in available free office rooms'
+                if office_name == 'Office Rooms Full':
+                    return 'All Created Office rooms Full'
+                if office_name == 'No Office Rooms':
+                    return 'No Office Rooms Created Yet'
             else:
-                return "Wrong optional argument, argument should either be Y or N"
-                
-        else: 
-            return "Only fellows and staff can be added to the system"
+                short_name = person_name.split()    
+                output = """\
+                Fellow {0} has been successfully added.
+                {1} has been allocated the office {2}
+                """.format(person_name, short_name[0], office_name)
             
-        
-    def room_allocator(self, person_name, room_type):
-        "allocates rooms"
-        available_rooms = []
-        if room_type == "office":
-            self.andelans += 1
-            for office_room_name in self.office_room_people.keys():
-                office_room_full = True
-                in_room = False
-                if len(self.office_room_people[office_room_name]) < 6:
-                    office_room_full = False
-                    if person_name in self.office_room_people[office_room_name]:
-                        in_room = True
-                        continue
-                    available_rooms.append(office_room_name)
-            if office_room_full: return 'office_room_full'
-            if in_room: return 'in_room'
-            if len(available_rooms) > 0:
-                office_name = available_rooms[random.randint(0, len(available_rooms)-1)]
-                return office_name
-            return 'All created rooms in for office space full. Please create a new room'
-            
-        elif room_type == "living_space":
-            for living_room_name in self.living_room_people.keys():
-                living_room_full = True
-                in_room = False
-                if len(self.living_room_people[living_room_name]) < 4:
-                    living_room_full = False
-                    if person_name in self.living_room_people[living_room_name]:
-                        in_room = True
-                        continue
-                    available_rooms.append(living_room_name)
-            if living_room_full: return 'living_room_full'
-            if in_room: return 'in_room'
-            if len(available_rooms) > 0:
-                living_space_name = available_rooms[random.randint(0, len(available_rooms)-1)]
-                return living_space_name
-            return 'All created rooms in for living space full. Please create a new room'
-            
-        else:
-            return "Invalid room type, room type is either an office or living space."
-            
+                if accommodation == 'Y':
+                    living_space_name = self.allocate_living_room(
+                                            person_name)
+                    try:
+                        self.living_room_people[living_space_name].append(
+                            person_name)
+                    except KeyError:
+                        if living_space_name == 'Name Exists in living':
+                            return 'Name Exists in available free living rooms'
+                        if living_space_name == 'Living Rooms Full':
+                            return 'All Created Living Rooms Full'
+                        if living_space_name == 'No Living Rooms':
+                            return 'No Living Rooms Created Yet'
+                    else:
+                        short_name = person_name.split()
+                        output = """\
+                        Fellow {0} has been successfully added.
+                        {1} has been allocated the office {2}
+                        {1} has been allocated the livingspace {3}
+                        """.format(person_name, short_name[0], 
+                                    office_name, 
+                                    living_space_name)
+                return output
+               
+    def check_office_rooms_created(self):
+        '''
+        Checks if there are any rooms of type office created.
+        '''
+        if len(self.office_room_people) > 0:
+            return True
+        return False
+
+    def check_living_rooms_created(self):
+        '''
+        Checks if there are any rooms of type living living_space created.
+        '''
+        if len(self.living_room_people) > 0:
+            return True
+        return False
+
+    def check_office_rooms_free_space(self):
+        '''
+        Checks if there are free rooms of office room_type
+        '''
+        available_office_rooms = []
+        if self.check_office_rooms_created():
+            for room in self.office_room_people.keys():
+                if len(self.office_room_people[room]) < 6:
+                    available_office_rooms.append(room)
+            if len(available_office_rooms) > 0:
+                return available_office_rooms
+            return 'Office Rooms Full'
+        return 'No Office Rooms'
+
+    def check_living_rooms_free_space(self):
+        '''
+        Checks if there are free rooms of living room_type
+        '''
+        available_living_rooms = []
+        if self.check_living_rooms_created():
+            for room in self.living_room_people.keys():
+                if len(self.living_room_people[room]) < 6:
+                    available_living_rooms.append(room)
+            if len(available_living_rooms) > 0:
+                return available_living_rooms
+            return 'Living Rooms Full'
+        return 'No Living Rooms'
+
+    def check_person_name_in_office_room(self, person_name):
+        '''
+        Checks if person_name exists in available_office_rooms.
+        '''
+        office_rooms = self.check_office_rooms_free_space()
+        if office_rooms != 'No Office Rooms':
+            if office_rooms != 'Office Rooms Full':
+                for office_room in self.office_room_people:
+                    if person_name in self.office_room_people[office_room]:
+                        office_rooms.remove(office_room)
+                if len(office_rooms) > 0:
+                    return office_rooms
+                return 'Name Exists'
+            return 'Office Rooms Full'
+        return 'No Office Rooms'
+
+    def check_person_name_in_living_room(self, person_name):
+        '''
+        Checks if person_name exists in available_living_rooms.
+        '''
+        living_rooms = self.check_living_rooms_free_space()
+        if living_rooms != 'No Living Rooms':
+            if living_rooms != 'Living Rooms Full':
+                for living_room in self.living_room_people:
+                    if person_name in self.living_room_people[living_room]:
+                        living_rooms.remove(living_room)
+                if len(living_rooms) > 0:
+                    return living_rooms
+                return 'Name Exists'
+            return 'Living Rooms Full'
+        return 'No Living Rooms'
+
+    def allocate_office_room(self, person_name):
+        '''
+        Randomly allocates an office room.
+        '''
+        office_rooms_to_allocate = self.check_person_name_in_office_room(person_name)
+        if office_rooms_to_allocate != 'No Office Rooms':
+            if office_rooms_to_allocate != 'Name Exists':
+                self.andelans += 1
+                allocated_office_room = office_rooms_to_allocate[random.randint(
+                    0, len(office_rooms_to_allocate)-1)]
+                return allocated_office_room
+            return 'Name Exists in office'
+        return 'No Office Rooms'
+
+    def allocate_living_room(self, person_name):
+        '''
+        Randomly allocates an living room.
+        '''
+        living_rooms_to_allocate = self.check_person_name_in_living_room(person_name)
+        if living_rooms_to_allocate != 'No Living Rooms':
+            if living_rooms_to_allocate != 'Name Exists':
+                allocated_living_room = living_rooms_to_allocate[random.randint(
+                    0, len(living_rooms_to_allocate)-1)]
+                return allocated_living_room
+            return 'Name Exists in living'
+        return 'No Living Rooms'
+  
     def get_office_allocation(self, room_name):
         "outputs names of people in a certain office room"
         if len(self.office_room_people[room_name]) > 0:
@@ -191,6 +239,7 @@ class Room(object):
             for member in self.office_room_people[room_name]:
                 print(member, end=' ')
                 office_room.append(member)
+                print()
                 
         for room_name in self.living_room_people.keys():
             print(room_name)
@@ -199,13 +248,21 @@ class Room(object):
             for member in self.living_room_people[room_name]:
                 print(member, end=' ')
                 living_room.append(member)
+                print()
+                
                 
         return office_room, living_room       
 if __name__ == "__main__":
                         
     d4 = Room()
+    # d4.create_room('living_space', 'blue')
     d4.create_room('office', 'blue')
-    d4.add_person('pro', 'staff')
+    print(d4.add_person('pro', 'fellow', 'Y'))
     d4.add_person('pro2', 'staff')
-    print(d4.add_person('pro2', 'staff'))
+    # d4.add_person('pro3', 'fellow')
+    # d4.add_person('pro21', 'fellow')
+    # d4.add_person('pro20', 'fellow')
+    # d4.add_person('pro223', 'fellow')
+    # d4.add_person('pro212', 'fellow')
+    print(d4.add_person('pro21', 'staff'))
     

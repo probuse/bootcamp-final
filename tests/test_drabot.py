@@ -45,6 +45,18 @@ class TestCreateRoom(unittest.TestCase):
         new_room_count = len(self.room.living_room_names)
         self.assertEqual((new_room_count - initial_room_count), 3)
         
+    # def test_room_must_be_created_before_adding_staff(self):
+    #     peter = self.room.add_person('peter', 'staff')
+    #     self.assertEqual(peter, 'No office rooms created yet.')
+        
+    # def test_room_must_be_created__before_adding_fellow(self):
+    #     peter = self.room.add_person('peter', 'fellow')
+    #     self.assertEqual(peter, 'No office rooms created yet.')
+        
+    # def test_room_must_be_created_before_adding_fellow_with_accomodation(self):
+    #     peter = self.room.add_person('peter', 'fellow', 'Y')
+    #     self.assertEqual(peter, 'No living rooms created yet.')
+        
     def test_room_type_is_office(self):
         masaka = self.room.create_room('offic', 'masaka')
         masaka = self.room.create_room('office', 'masaka')

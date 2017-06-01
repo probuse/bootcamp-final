@@ -125,8 +125,9 @@ class Runner(cmd.Cmd):
     @docopt_cmd    
     def do_print_allocations(self, arg):
         "Usage: print_allocations [-o=filename]"
+        room.print_allocations()
         
-        print("This Feature is still under development")
+        #print("This Feature is still under development")
         
     @docopt_cmd    
     def do_print_unallocated(self, arg):
